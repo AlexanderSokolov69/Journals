@@ -1,5 +1,5 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import QModelIndex, Qt
+from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 
 
 
