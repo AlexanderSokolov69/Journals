@@ -1,12 +1,39 @@
-from flask import Flask, render_template, redirect, session, make_response, jsonify, flash, request
-from data import db_session, items_api
+from classes.db_session import connectdb
+from classes.db_classes import Users, Courses, Groups
+import sys
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QHeaderView
+
+
+class Window(QWidget):
+    def __init__(self):
+        super(Window, self).__init__()
+        self.tbl = QTableWidget(self)
+        self.setGeometry(100, 100, 1200, 400)
+        con = connectdb('db\\database_J.db')
+        spis = Users(con).get_all()
+        self.tbl.resize(1200, 400)
+        self.tbl.setColumnCount(len(spis[0]))
+        self.tbl.setRowCount(len(spis))
+        item = QTableWidgetItem('123')
+        self.tbl.setItem(0, 0, item)
+        head = QHeaderView()
+
+        self.tbl.setHorizontalHeader(head)
+    #    self.tbl.horizontalHeader(0).setText(spis[0][0])
+     #   [self.tbl.horizontalHeader(i).setText(spis[0][i]) for i in range(len(spis[0]))]
+        self.adjustSize()
+        self.show()
 
 
 def main():
-    db_session.global_init("db/database.db")
-    app.register_blueprint(items_api.blueprint)
-    app.run()
-
+    con = connectdb('db\\database_J.db')
+    print(Users(con).get_all())
+    # cur = con.cursor()
+    # result = cur.execute('select * from users').fetchall()
+    # print(result)
 
 if __name__ == '__main__':
-    main()
+    app = QApplication(sys.argv)
+    wnd = Window()
+    sys.exit(app.exec())
+
