@@ -2,6 +2,7 @@ from classes.db_session import connectdb
 from classes.db_classes import Users, Courses, Groups
 import sys
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QHeaderView
+import hashlib
 
 
 class Window(QWidget):
