@@ -7,18 +7,11 @@ from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWi
 class Window(QWidget):
     def __init__(self):
         super(Window, self).__init__()
-        self.tbl = QTableWidget(self)
         self.setGeometry(100, 100, 1200, 400)
         con = connectdb('db\\database_J.db')
         spis = Users(con).get_all()
-        self.tbl.resize(1200, 400)
-        self.tbl.setColumnCount(len(spis[0]))
-        self.tbl.setRowCount(len(spis))
-        item = QTableWidgetItem('123')
-        self.tbl.setItem(0, 0, item)
-        head = QHeaderView()
+        print(spis)
 
-        self.tbl.setHorizontalHeader(head)
     #    self.tbl.horizontalHeader(0).setText(spis[0][0])
      #   [self.tbl.horizontalHeader(i).setText(spis[0][i]) for i in range(len(spis[0]))]
         self.adjustSize()
