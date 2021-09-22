@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QAbstractItemView
+import PyQt5
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QAbstractItemView, QPushButton
 
 from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
 from widgets.MainWindow import Ui_MainWindow
@@ -34,10 +35,53 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.fltCheck.setChecked(False)
 
         self.addButton.clicked.connect(self.add_record)
+        self.editButton.clicked.connect(self.edit_record)
+        self.delButton.clicked.connect(self.del_record)
+        self.commitButton.clicked.connect(self.refresh_table)
+        self.rollbackButton.clicked.connect(self.refresh_table)
+
+    def refresh_table(self):
+        if type(self.sender()) == PyQt5.QtWidgets.QPushButton:
+            if self.sender().text() == self.commitButton.text():
+                self.currTable.commit()
+            elif self.sender().text() == self.rollbackButton.text():
+                self.currTable.rollback()
+        self.currTable.update()
+        self.tableView.setModel(self.currTable.model())
+        self.tableView.resizeColumnsToContents()
+        self.tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        if self.currTable.con.in_transaction:
+            self.transLabel.setText('')
+            self.commitButton.setFlat(False)
+            self.rollbackButton.setFlat(False)
+            self.commitButton.setDisabled(False)
+            self.rollbackButton.setDisabled(False)
+        else:
+            self.transLabel.setText('')
+            self.commitButton.setFlat(True)
+            self.rollbackButton.setFlat(True)
+            self.commitButton.setDisabled(True)
+            self.rollbackButton.setDisabled(True)
 
     def add_record(self):
         self.currTable.rec_append({'name': 'Пример'})
-        self.currTable.commit()
+        self.refresh_table()
+
+    def del_record(self):
+        self.currTable.rec_delete(self.currTable.data[self.tableView.currentIndex().row()][0])
+        self.refresh_table()
+
+    def edit_record(self):
+        id = self.currTable.data[self.tableView.currentIndex().row()][0]
+        val = self.currTable.data[self.tableView.currentIndex().row()]
+        data = {}
+        for i, key in enumerate(self.currTable.header):
+            if key != 'id':
+                data[key] = val[i]
+        # data['name'] = data['name'] + '12'
+        print(id, data)
+        # self.currTable.rec_update(id, data)
+        # self.refresh_table()
 
     def filter(self):
         if self.fltCheck.isChecked():
@@ -61,7 +105,5 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.currTable = self.table_list[self.listBox.currentIndex()][1]
         self.currTable.update()
         # self.currTable = self.table_list[self.listWidget.currentRow()][1]
-        self.tableView.setModel(self.currTable.model())
-        self.tableView.resizeColumnsToContents()
-        self.tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.refresh_table()
         self.tableView.selectRow(0)

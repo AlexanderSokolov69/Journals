@@ -1,3 +1,4 @@
+import sqlite3
 from sqlite3 import connect
 from .qt_classes import MyTableModel
 
@@ -5,15 +6,16 @@ class SQLObject:
     def __init__(self, con: connect):
         if con is None:
             Exception('NO database connection')
-        self.con = con
+        self.con : sqlite3.connect = con
         self.cur = con.cursor()
         self.header = []
         self.data = []
         self.tmodel = None
         self.sql = None
-        self.dbname = None
         self.set_sql()
         self.update()
+        self.dbname = None
+        self.keys = []
 
     def set_sql(self, sql=None):
         self.sql = sql
@@ -34,6 +36,9 @@ class SQLObject:
     def commit(self):
         self.con.commit()
 
+    def rollback(self):
+        self.con.rollback()
+
     def rec_update(self, id, arg: dict):
         args = ', '.join([f'{item[0]} = "{item[1]}"' for item in arg.items()])
         sql = f"update {self.dbname} set {args} where id = {id}"
@@ -51,4 +56,9 @@ class SQLObject:
 
     def rec_delete(self, id):
         sql = f"delete from {self.dbname} where id = {id}"
+        self.cur.execute(sql)
         return True
+
+
+if __name__ == '__main__':
+    pass
