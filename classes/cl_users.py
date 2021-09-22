@@ -1,5 +1,6 @@
-from .db_session import connectdb
+import sqlite3
 from .cl_sqlobject import SQLObject
+from .cl_password import Password
 
 
 class Users(SQLObject):
@@ -14,7 +15,25 @@ class Users(SQLObject):
         else:
             self.sql = f"""{sql} order by {ord}"""
 
+    def get_user_login(self, login):
+        sql = f'select * from users where login = "{login.lower()}"'
+        cur = self.con.cursor()
+        data = cur.execute(sql).fetchone()
+        if data:
+            ret = {}
+            for i, key in enumerate(cur.description):
+                ret[key[0]] = data[i]
+        else:
+            ret = None
+        return ret
+
+    def set_user_password(self, id, passwd):
+        sql = f"update users set passwd = ? where id = {id}"
+        cur = self.con.cursor()
+        cur.execute(sql, [passwd])
+        self.con.commit()
 
 if __name__ == '__main__':
-    con = connectdb('..\\db.database_J.db')
-    print(Users(con))
+    con = sqlite3.connect('..\\db\\database_J.db')
+    us = Users(con)
+    print(us.get_user_login('falcon'))

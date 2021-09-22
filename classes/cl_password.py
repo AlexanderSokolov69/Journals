@@ -5,9 +5,9 @@ import hashlib
 class Password:
     def __init__(self, passwd=''):
         self.N = 8
-        self.password = passwd
         salt = os.urandom(self.N)
-        self.storage = salt + self.make_key(passwd, salt)
+        psw = self.make_key(passwd, salt)
+        self.storage = salt + psw
 
     def make_key(self, passwd, salt):
         return hashlib.pbkdf2_hmac(
@@ -22,15 +22,18 @@ class Password:
     def set_storage(self, storage):
         self.storage = storage
 
+
     def check_passwd(self, passwd):
         salt = self.storage[:self.N]
-        return self.storage[self.N:] == self.make_key(passwd, salt)
+        psw = self.storage[self.N:]
+        return psw == self.make_key(passwd, salt)
 
 
 if __name__ == '__main__':
     ph = Password(input())
     print(ph.get_storage())
-    while (psw := input()):
-        print(ph.check_passwd(psw))
 
+    # while (psw := input()):
+    #     print(ph.check_passwd(psw))
+    #
 

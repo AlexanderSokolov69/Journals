@@ -5,6 +5,7 @@ class SQLObject:
     def __init__(self, con: connect):
         if con is None:
             Exception('NO database connection')
+        self.con = con
         self.cur = con.cursor()
         self.header = []
         self.data = []
