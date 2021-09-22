@@ -17,8 +17,10 @@ class LoginDialog(QWidget, Ui_Dialog):
 
     def initUI(self, con):
         self.user = Users(con)
+        self.passwd2.hide()
         self.passwd_ok = False
         self.loggedUser = None
+        self.setFixedSize(480, 210)
 
         self.show()
 
@@ -27,13 +29,23 @@ class LoginDialog(QWidget, Ui_Dialog):
         if self.loggedUser:
             self.label_err.setText(str(self.loggedUser['fio']))
             psw = Password('')
-            psw.set_storage(self.loggedUser['passwd'])
-            if psw.check_passwd(self.passwd.text().strip()):
-                self.label_err.setText('Пароль верный!')
-                self.passwd_ok = True
-                self.close()
+            if not self.loggedUser['passwd']:
+                if self.passwd.text() != self.passwd2.text() or not self.passwd2.text():
+                    self.passwd2.show()
+                    self.label_err.setText(f"{str(self.loggedUser['fio'])} введите новый пароль 2 раза..")
+                else:
+                    self.passwd2.hide()
+                    psw = Password(self.passwd2.text())
+                    self.user.set_user_password(self.loggedUser['id'], psw.get_storage())
+                    self.user.get_user_login(self.login.text())
             else:
-                self.label_err.setText('Ошибка в имени или пароле!')
+                psw.set_storage(self.loggedUser['passwd'])
+                if psw.check_passwd(self.passwd.text().strip()):
+                    self.label_err.setText('Пароль верный!')
+                    self.passwd_ok = True
+                    self.close()
+                else:
+                    self.label_err.setText('Ошибка в имени или пароле!')
         else:
             self.label_err.setText('Ошибка в имени или пароле!')
 

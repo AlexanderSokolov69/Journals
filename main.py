@@ -1,33 +1,27 @@
-from classes.db_session import connectdb
-from classes.db_classes import Users, Courses, Groups
 import sys
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QHeaderView
-import hashlib
 
+from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import QAbstractItemView
 
-class Window(QWidget):
-    def __init__(self):
-        super(Window, self).__init__()
-        self.setGeometry(100, 100, 1200, 400)
-        con = connectdb('db\\database_J.db')
-        spis = Users(con).get_all()
-        print(spis)
+from classes.db_session import connectdb
+from classes.db_classes import Users, Courses, Groups, Password, Logger
+from widgets.w_syslogin import LoginDialog
+from widgets.w_mainwindow import MWindow
 
-    #    self.tbl.horizontalHeader(0).setText(spis[0][0])
-     #   [self.tbl.horizontalHeader(i).setText(spis[0][i]) for i in range(len(spis[0]))]
-        self.adjustSize()
-        self.show()
-
-
-def main():
-    con = connectdb('db\\database_J.db')
-    print(Users(con).get_all())
-    # cur = con.cursor()
-    # result = cur.execute('select * from users').fetchall()
-    # print(result)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    wnd = Window()
-    sys.exit(app.exec())
+    con = connectdb('db\\database_J.db')
+    log = Logger(con)
+    log.out(('0', '', '', '', 'Старт программы'))
+    login_user = LoginDialog(con)
+    wnd = MWindow(con)
+
+    login_user.show()
+    app.exec()
+    if login_user.passwd_ok:
+        log.out((login_user.loggedUser['id'], login_user.loggedUser['fio'], '', '', 'Успешный вход'))
+        wnd.showMaximized()
+        sys.exit(app.exec())
 
