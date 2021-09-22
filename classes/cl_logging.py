@@ -4,7 +4,7 @@ class Logger:
     def __init__(self, con):
         self.con = con
         self.cur = con.cursor()
-        self.sql = "insert into log (id, fio, date, time, info) values (?, ?, ?, ?, ?)"
+        self.sql = "insert into log (uid, fio, date, time, info) values (?, ?, ?, ?, ?)"
 
     def out(self, arg):
         self.cur.execute(self.sql, arg)

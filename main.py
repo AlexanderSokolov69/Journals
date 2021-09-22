@@ -14,7 +14,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     con = connectdb('db\\database_J.db')
     log = Logger(con)
-    log.out(('0', '', '', '', 'Старт программы'))
+    log.out(('', '', '', '', 'Старт программы'))
     login_user = LoginDialog(con)
     wnd = MWindow(con)
 

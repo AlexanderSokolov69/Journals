@@ -11,6 +11,7 @@ class SQLObject:
         self.data = []
         self.tmodel = None
         self.sql = None
+        self.dbname = None
         self.set_sql()
         self.update()
 
@@ -29,3 +30,25 @@ class SQLObject:
 
     def model(self):
         return self.tmodel
+
+    def commit(self):
+        self.con.commit()
+
+    def rec_update(self, id, arg: dict):
+        args = ', '.join([f'{item[0]} = "{item[1]}"' for item in arg.items()])
+        sql = f"update {self.dbname} set {args} where id = {id}"
+        print(sql)
+        self.cur.execute(sql)
+        return True
+
+    def rec_append(self, arg: dict):
+        key = ', '.join(arg.keys())
+        val = f""" "{'", "'.join(arg.values())}" """
+        sql = f"insert into {self.dbname} ({key}) values ({val})"
+        print(sql)
+        self.cur.execute(sql)
+        return True
+
+    def rec_delete(self, id):
+        sql = f"delete from {self.dbname} where id = {id}"
+        return True

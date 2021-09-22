@@ -1,10 +1,10 @@
 import sqlite3
 from .cl_sqlobject import SQLObject
-from .cl_password import Password
 
 
 class Users(SQLObject):
     def set_sql(self, sql=None, ord='Фамилия'):
+        self.dbname = 'users'
         if sql is None:
             self.sql = f"""select u.id, u.fio as 'Фамилия И.О.', u.fam as "Фамилия", u.name as 'Имя', 
                 u.sname as 'Отчество', u.birthday as 'Д.рожд', u.phone as 'Телефон', u.email as 'E-mail', 

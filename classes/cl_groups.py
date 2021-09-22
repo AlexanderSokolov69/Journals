@@ -3,6 +3,7 @@ from .cl_sqlobject import SQLObject
 
 class Groups(SQLObject):
     def set_sql(self, sql=None, ord='g.id'):
+        self.dbname = 'groups'
         if sql is None:
             self.sql = f"""select g.id, g.name as "Группа", c.name as "Учебный курс", c.volume as "Объем", 
                     c.lesson as "Занятие", c.year as "Уч.год", u.fio as "ФИО наставника" 
