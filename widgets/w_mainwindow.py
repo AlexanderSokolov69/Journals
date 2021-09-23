@@ -1,9 +1,6 @@
-import PyQt5
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QAbstractItemView, QPushButton, \
-    QMessageBox, QGridLayout, QLineEdit, QComboBox
-from PyQt5 import QtGui, QtWidgets
-
-from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups, Users
+from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, QDialogButtonBox
+from PyQt5 import QtGui
+from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
 from widgets.MainWindow import Ui_MainWindow
 from classes.cl_sqlobject import SQLObject
 
@@ -26,13 +23,16 @@ class MWindow(QMainWindow, Ui_MainWindow):
             4: ('Учебные группы', Groups(self.con)),
             5: ('Списки учебных групп', GroupTable(self.con))
         }
-        self.currTable  : SQLObject = None
+        self.currTable = None
         self.listBox.addItems([val[0] for val in self.table_list.values()])
         self.listBox.currentIndexChanged.connect(self.change_table)
         self.listBox.setCurrentIndex(3)
 
         self.editFrame.hide()
         self.edit_widgets = []
+
+        self.buttonEditFrame.button(QDialogButtonBox.Save).setText('Сохранить')
+        self.buttonEditFrame.button(QDialogButtonBox.No).setText('Отмена')
 
         # Фильтр списка
         self.fltCheck.stateChanged.connect(self.filter)
@@ -48,8 +48,10 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.buttonEditFrame.rejected.connect(self.deactivateEditFrame)
         self.buttonEditFrame.accepted.connect(self.save_edit_frame)
 
+        self.tableView.doubleClicked.connect(self.edit_Button.click)
+
     def clicked_buttons(self):
-        print(self.sender().objectName())
+        # print(self.sender().objectName())
         obj_name = self.sender().objectName()
         if obj_name == 'del_Button':
             self.currTable.rec_delete(self.currTable.data[self.tableView.currentIndex().row()][0])
@@ -135,17 +137,17 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.current_data = self.currTable.get_record(self.id)
         for i, val in enumerate(self.current_data):
             self.edit_widgets.append(QLabel(val[1], self))
-            self.gridLayout.addWidget(self.edit_widgets[-1], i + 1, 0)
+            self.gridLayout.addWidget(self.edit_widgets[-1], i + 2, 0)
             if val[0][:2] == 'id':
                 self.edit_widgets.append(QComboBox(self))
-                self.gridLayout.addWidget(self.edit_widgets[-1], i + 1, 1)
+                self.gridLayout.addWidget(self.edit_widgets[-1], i + 2, 1)
                 sql = f"select name from {val[0][2:]}"
                 cur = self.con.cursor()
                 spis = cur.execute(sql).fetchall()
                 self.edit_widgets[-1].addItems([val[:][0] for val in spis])
             else:
                 self.edit_widgets.append(QLineEdit(str(val[2]), self))
-                self.gridLayout.addWidget(self.edit_widgets[-1], i + 1, 1)
+                self.gridLayout.addWidget(self.edit_widgets[-1], i + 2, 1)
 
     def deactivateEditFrame(self):
         for widg in self.edit_widgets:
@@ -169,16 +171,14 @@ class MWindow(QMainWindow, Ui_MainWindow):
                 sql = f"select id from {base} where name = '{fnd}'"
                 cur = self.con.cursor()
                 id = cur.execute(sql).fetchone()
-                # id = Users().execute_command(sql)
-                print('combo', id[0])
+
                 arg[self.current_data[i][0]] = str(id[0])
             else:
                 print('Ошибочный тип в редакторе!')
-            print(arg)
+
         if self.id == 0:
             self.currTable.rec_append(arg)
         else:
             self.currTable.rec_update(self.id, arg)
 
         self.deactivateEditFrame()
-

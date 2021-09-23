@@ -17,7 +17,7 @@ class SQLObject:
         self.set_sql()
         self.update()
 
-    def set_sql(self, sql=None, ord=None):
+    def set_sql(self, sql=None, flt=None):
         pass
 
     def update(self):
@@ -45,7 +45,6 @@ class SQLObject:
     def rec_update(self, id, arg: dict):
         args = ', '.join([f'{item[0]} = "{item[1]}"' for item in arg.items()])
         sql = f"update {self.dbname} set {args} where id = {id}"
-        print(sql)
         self.cur.execute(sql)
         return True
 
@@ -53,13 +52,11 @@ class SQLObject:
         key = ', '.join(arg.keys())
         val = '"' + '", "'.join(arg.values()) +'"'
         sql = f"""insert into {self.dbname} ({key}) values ({val})"""
-        print(sql)
         self.cur.execute(sql)
         return True
 
     def rec_delete(self, id):
         sql = f"delete from {self.dbname} where id = {id}"
-        print(sql)
         self.cur.execute(sql)
         return True
 

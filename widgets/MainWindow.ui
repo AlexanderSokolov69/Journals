@@ -279,7 +279,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>!</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -482,16 +482,46 @@
             </property>
             <layout class="QGridLayout" name="gridLayout">
              <item row="0" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Ввод данных:</string>
+              <widget class="QDialogButtonBox" name="buttonEditFrame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>180</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="standardButtons">
+                <set>QDialogButtonBox::No|QDialogButtonBox::Save</set>
+               </property>
+               <property name="centerButtons">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QDialogButtonBox" name="buttonEditFrame">
-               <property name="standardButtons">
-                <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+              <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Ввод данных</string>
                </property>
               </widget>
              </item>

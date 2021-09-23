@@ -3,7 +3,7 @@ from .cl_sqlobject import SQLObject
 
 
 class Places(SQLObject):
-    def set_sql(self, sql=None, ord='Наименование'):
+    def set_sql(self, sql=None, flt='Наименование'):
         self.keys = (
             ('name', 'Место работы/учёбы:'),
             ('comment', 'класс/доп.инф.:')
@@ -12,6 +12,6 @@ class Places(SQLObject):
         if sql is None:
             self.sql = f"""select id, name as 'Наименование', comment as "Доп.инфо"
                from places
-            order by {ord}"""
+            order by {flt}"""
         else:
-            self.sql = f"""{sql} order by {ord}"""
+            self.sql = f"""{sql} order by {flt}"""

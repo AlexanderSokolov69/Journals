@@ -3,7 +3,7 @@ from .cl_sqlobject import SQLObject
 
 
 class Privileges(SQLObject):
-    def set_sql(self, sql=None, ord='id'):
+    def set_sql(self, sql=None, flt='id'):
         self.keys = (
             ('name', 'Название привилегии доступа:'),
             ('access', 'Код доступа:')
@@ -12,6 +12,6 @@ class Privileges(SQLObject):
         if sql is None:
             self.sql = f"""select id, name as 'Наименование', access as "Привилегии"
                from priv
-            order by {ord}"""
+            order by {flt}"""
         else:
-            self.sql = f"""{sql} order by {ord}"""
+            self.sql = f"""{sql} order by {flt}"""

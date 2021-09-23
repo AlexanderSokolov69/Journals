@@ -3,7 +3,7 @@ from .cl_sqlobject import SQLObject
 
 
 class Users(SQLObject):
-    def set_sql(self, sql=None, ord='Фамилия'):
+    def set_sql(self, sql=None, flt='Фамилия'):
         self.keys = (
             ('fam', 'Фамилия:'),
             ('ima', 'Имя:'),
@@ -26,9 +26,9 @@ class Users(SQLObject):
                from users u
                join roles r on u.idRoles = r.id
                join places p on u.idPlaces = p.id 
-               order by {ord}"""
+               order by {flt}"""
         else:
-            self.sql = f"""{sql} order by {ord}"""
+            self.sql = f"""{sql} order by {flt}"""
 
     def get_user_login(self, login):
         sql = f'select * from users where login = "{login.lower()}"'
