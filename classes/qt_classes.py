@@ -15,17 +15,24 @@ class MyTableModel(QtCore.QAbstractTableModel):
                 return self.head[section]
             else:
                 return ''
+        if role == Qt.BackgroundRole:
+            # See below for the data structure.
+            return QtGui.QColor('#c0f0f0')
 
     def columnCount(self, parent=None):
-        return len(self.data[0])
+            return len(self.head)
 
     def rowCount(self, parent=None):
-        return len(self.data)
+            return len(self.data)
 
     def data(self, index, role):
-        row = index.row()
-        col = index.column()
-        ret = self.data[row][col]
+        ret = None
+        if len(self.data[0]) > 0:
+            row = index.row()
+            col = index.column()
+            ret = self.data[row][col]
+        else:
+            ret = ' '
         if role == QtCore.Qt.DisplayRole:
             if ret is None:
                 return ""

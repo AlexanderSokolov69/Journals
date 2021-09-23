@@ -16,12 +16,12 @@ if __name__ == '__main__':
     log = Logger(con)
     log.out(('', '', '', '', 'Старт программы'))
     login_user = LoginDialog(con)
-    wnd = MWindow(con)
 
     login_user.show()
     app.exec()
     if login_user.passwd_ok:
-        log.out((login_user.loggedUser['id'], login_user.loggedUser['fio'], '', '', 'Успешный вход'))
+        log.out((login_user.loggedUser['id'], login_user.loggedUser['name'], '', '', 'Успешный вход'))
+        wnd = MWindow(con)
         wnd.showMaximized()
         sys.exit(app.exec())
 

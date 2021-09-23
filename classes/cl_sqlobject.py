@@ -8,23 +8,26 @@ class SQLObject:
             Exception('NO database connection')
         self.con : sqlite3.connect = con
         self.cur = con.cursor()
-        self.header = []
-        self.data = []
         self.tmodel = None
         self.sql = None
+        self.dbname = None
+        self.header = []
+        self.data = []
+        self.keys = []
         self.set_sql()
         self.update()
-        self.dbname = None
-        self.keys = []
 
-    def set_sql(self, sql=None):
-        self.sql = sql
+    def set_sql(self, sql=None, ord=None):
+        pass
 
     def update(self):
         if self.sql is not None:
             ret = self.cur.execute(self.sql).fetchall()
-            self.header = [i[0] for i in self.cur.description]
-            self.data = ret
+            if ret:
+                self.header = [i[0] for i in self.cur.description]
+                self.data = ret
+            else:
+                self.data =[[]]
             self.tmodel = MyTableModel(self.header, self.data)
             return len(self.data)
         else:
@@ -48,16 +51,37 @@ class SQLObject:
 
     def rec_append(self, arg: dict):
         key = ', '.join(arg.keys())
-        val = f""" "{'", "'.join(arg.values())}" """
-        sql = f"insert into {self.dbname} ({key}) values ({val})"
+        val = '"' + '", "'.join(arg.values()) +'"'
+        sql = f"""insert into {self.dbname} ({key}) values ({val})"""
         print(sql)
         self.cur.execute(sql)
         return True
 
     def rec_delete(self, id):
         sql = f"delete from {self.dbname} where id = {id}"
+        print(sql)
         self.cur.execute(sql)
         return True
+
+    def get_record(self, id):
+        fields = ', '.join([key[0] for key in self.keys])
+        sql = f"select {fields} from {self.dbname} where id = {id}"
+        cur = self.con.cursor()
+        data = cur.execute(sql).fetchone()
+        if not data:
+            data = [''] * len(self.keys)
+        ret = []
+        for i, key in enumerate(self.keys):
+            key = list(key)
+            key.append(data[i])
+            ret.append(key)
+        return ret
+
+    def execute_command(self, comm):
+        cur = self.con.cursor()
+        ret = cur.execute(comm).fetchall()
+        return ret
+
 
 
 if __name__ == '__main__':

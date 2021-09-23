@@ -3,6 +3,13 @@ from .cl_sqlobject import SQLObject
 
 class Courses(SQLObject):
     def set_sql(self, sql=None, ord='id'):
+        self.keys = (
+            ('name', 'Наименование учебного курса:'),
+            ('volume', 'Объём курса в акк.часах:'),
+            ('lesson', 'Продолжительность занятия, акк.ч.:'),
+            ('url', 'Ссылка на раздел на сайте:'),
+            ('year', 'Учебный год:')
+        )
         self.dbname = 'Courses'
         if sql is None:
             self.sql = f"""select id, name as 'Наименование курса', volume as 'Объем',

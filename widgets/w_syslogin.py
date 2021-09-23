@@ -27,12 +27,12 @@ class LoginDialog(QWidget, Ui_Dialog):
     def accept(self):
         self.loggedUser = self.user.get_user_login(self.login.text())
         if self.loggedUser:
-            self.label_err.setText(str(self.loggedUser['fio']))
+            self.label_err.setText(str(self.loggedUser['name']))
             psw = Password('')
             if not self.loggedUser['passwd']:
                 if self.passwd.text() != self.passwd2.text() or not self.passwd2.text():
                     self.passwd2.show()
-                    self.label_err.setText(f"{str(self.loggedUser['fio'])} введите новый пароль 2 раза..")
+                    self.label_err.setText(f"{str(self.loggedUser['name'])} введите новый пароль 2 раза..")
                 else:
                     self.passwd2.hide()
                     psw = Password(self.passwd2.text())
