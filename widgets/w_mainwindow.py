@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, QDialogButtonBox
 from PyQt5 import QtGui
+
+from classes.cl_delegates import Delegate
 from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
 from widgets.MainWindow import Ui_MainWindow
 from classes.cl_sqlobject import SQLObject
@@ -49,6 +51,13 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.buttonEditFrame.accepted.connect(self.save_edit_frame)
 
         self.tableView.doubleClicked.connect(self.edit_Button.click)
+        # self.deleg = Delegate()
+        # self.tableView.setItemDelegate(self.deleg)
+        # self.deleg.filter = 'Соколов'
+
+    def resort_table(self):
+        print('1')
+        print(self.tableView.horizontalHeader().currentIndex().column())
 
     def clicked_buttons(self):
         # print(self.sender().objectName())
@@ -78,6 +87,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
 
     def refresh_table(self):
         self.currTable.update()
+        self.tableLabel.setText(f"{self.listBox.currentText()}   ({len(self.currTable.data)})")
         self.tableView.setModel(self.currTable.model())
         self.tableView.resizeColumnsToContents()
         self.tableView.setSelectionBehavior(QAbstractItemView.SelectRows)

@@ -15,9 +15,14 @@ class MyTableModel(QtCore.QAbstractTableModel):
                 return self.head[section]
             else:
                 return ''
-        if role == Qt.BackgroundRole:
+        if role == Qt.BackgroundColorRole: # BackgroundRole:
             # See below for the data structure.
             return QtGui.QColor('#c0f0f0')
+        if role == Qt.InitialSortOrderRole:
+            self.beginResetModel()
+            self.data.sort(key=lambda i: i[section])
+            self.endResetModel()
+
 
     def columnCount(self, parent=None):
             return len(self.head)
@@ -42,6 +47,6 @@ class MyTableModel(QtCore.QAbstractTableModel):
             if isinstance(ret, int) or isinstance(ret, float):
                 # Align right, vertical middle.
                 return Qt.AlignVCenter + Qt.AlignRight
-        if role == Qt.BackgroundRole and index.column() == 0:
+        if role == Qt.BackgroundRole and index.row() % 2:
             # See below for the data structure.
-            return QtGui.QColor('#c0f0f0')
+            return QtGui.QColor('#f0fcfc')
