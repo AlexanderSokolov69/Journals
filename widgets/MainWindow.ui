@@ -435,6 +435,19 @@
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
+            <widget class="QLabel" name="label_refresh">
+             <property name="geometry">
+              <rect>
+               <x>40</x>
+               <y>0</y>
+               <width>47</width>
+               <height>13</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>
