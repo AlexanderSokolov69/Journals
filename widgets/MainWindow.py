@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 589)
         MainWindow.setMinimumSize(QtCore.QSize(800, 580))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("IT-куб3.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("IT-куб3.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         MainWindow.setWindowIcon(icon)
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)

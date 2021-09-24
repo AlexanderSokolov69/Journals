@@ -1,16 +1,15 @@
 from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, QDialogButtonBox
-from PyQt5 import QtGui
+from PyQt5 import QtGui, uic
 
-from classes.cl_delegates import Delegate
 from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
 from widgets.MainWindow import Ui_MainWindow
-from classes.cl_sqlobject import SQLObject
 
 
 class MWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, con):
         super(MWindow, self).__init__()
-        self.setupUi(self)
+        uic.loadUi('widgets\\MainWindow.ui', self)
+        # self.setupUi(self)
         self.initUi(con)
 
     def initUi(self, con):
