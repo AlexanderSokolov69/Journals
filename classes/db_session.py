@@ -1,8 +1,14 @@
 import sqlite3
 import sys
-import os
+from configparser import ConfigParser
 
 def connectdb(path):
+    try:
+        cfg = ConfigParser()
+        cfg.read("settings.ini")
+        path = cfg.get("Settings", "db_path")
+    except:
+        print('settings.ini where?')
     try:
         con = sqlite3.connect(path)
         print('Подключена БД:',  path)
