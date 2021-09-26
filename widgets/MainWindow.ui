@@ -555,7 +555,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QLCDNumber" name="lcdNumber">
+           <widget class="QLCDNumber" name="lcdNumber_Users">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -574,9 +574,72 @@
            </widget>
           </item>
           <item>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="tab2_edit">
+              <property name="text">
+               <string>Изменить</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">tab2_buttonGroup</string>
+              </attribute>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="tab2_del">
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">tab2_buttonGroup</string>
+              </attribute>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="tab2_add">
+              <property name="text">
+               <string>Добавить</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">tab2_buttonGroup</string>
+              </attribute>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QFrame" name="frame_4">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QLabel" name="label_6">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>151</width>
+                 <height>20</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Текущая запись:</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QPushButton" name="p2_commit">
+             <widget class="QPushButton" name="tab2_commit">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -595,10 +658,13 @@
               <property name="text">
                <string>Сохранить</string>
               </property>
+              <attribute name="buttonGroup">
+               <string notr="true">tab2_buttonGroup</string>
+              </attribute>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="p2_rollback">
+             <widget class="QPushButton" name="tab2_rollback">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -614,6 +680,9 @@
               <property name="text">
                <string>Отменить</string>
               </property>
+              <attribute name="buttonGroup">
+               <string notr="true">tab2_buttonGroup</string>
+              </attribute>
              </widget>
             </item>
            </layout>
@@ -627,7 +696,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>TextLabel</string>
+             <string/>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -639,7 +708,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <widget class="QFrame" name="frame_4">
+           <widget class="QFrame" name="frame_users">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -698,7 +767,7 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QDialogButtonBox" name="buttonBox">
+              <widget class="QDialogButtonBox" name="tab2_buttonBox">
                <property name="maximumSize">
                 <size>
                  <width>200</width>
@@ -706,7 +775,7 @@
                 </size>
                </property>
                <property name="standardButtons">
-                <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+                <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
                </property>
               </widget>
              </item>
@@ -714,7 +783,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTableView" name="tableView_2"/>
+           <widget class="QTableView" name="tableView_Users"/>
           </item>
          </layout>
         </item>
@@ -755,5 +824,6 @@
  <connections/>
  <buttongroups>
   <buttongroup name="buttonMainGroup"/>
+  <buttongroup name="tab2_buttonGroup"/>
  </buttongroups>
 </ui>

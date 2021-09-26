@@ -1,11 +1,18 @@
 import sqlite3
 from sqlite3 import connect
-from .qt_classes import MyTableModel
 
-class SQLObject:
+from .qt_classes import MyTableModel
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import pyqtSignal, QObject
+
+
+class SQLObject(QObject):
+    need_to_save = pyqtSignal()
     def __init__(self, con: connect):
+        super(SQLObject, self).__init__()
         if con is None:
             Exception('NO database connection')
+        # self.need_save = pyqtSignal()
         self.con : sqlite3.connect = con
         self.cur = con.cursor()
         self.tmodel = None
@@ -14,6 +21,7 @@ class SQLObject:
         self.header = []
         self.data = []
         self.keys = []
+        self.editable = False
         self.set_sql()
         self.update()
 
@@ -25,13 +33,21 @@ class SQLObject:
             ret = self.cur.execute(self.sql).fetchall()
             if ret:
                 self.header = [i[0] for i in self.cur.description]
-                self.data = ret
+                self.data = [list(rec) for rec in ret]
             else:
                 self.data =[[]]
-            self.tmodel = MyTableModel(self.header, self.data)
+            self.tmodel = MyTableModel(self.header, self.data, self.editable)
+            self.tmodel.need_save.connect(self.update_model)
             return len(self.data)
         else:
             return 0
+
+    def update_model(self):
+        self.rec_update(self.data[self.tmodel.current_index[0]][0],
+                        {self.keys[self.tmodel.current_index[1] - 1][0]:
+                             self.data[self.tmodel.current_index[0]][self.tmodel.current_index[1]]}
+                        )
+        self.need_to_save.emit()
 
     def model(self):
         return self.tmodel

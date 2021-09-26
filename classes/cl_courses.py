@@ -18,3 +18,5 @@ class Courses(SQLObject):
                 from courses order by {flt}"""
         else:
             self.sql = f"""{sql} order by {flt}"""
+
+
