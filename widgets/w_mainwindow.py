@@ -1,7 +1,9 @@
+from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QKeyEvent
 from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, \
-    QDialogButtonBox, QTableView
+    QDialogButtonBox, QTableView, QWidget
 from PyQt5 import QtGui, uic
-
+from PyQt5.QtCore import Qt
 from classes.cl_users import Users
 from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
 from widgets.MainWindow import Ui_MainWindow
@@ -19,59 +21,54 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.con = con
         self.id = None
         self.currTable = None
-        self.editFrame.hide()
         self.edit_widgets = []
-        self.MainTab.setCurrentIndex(0)
+        self.table_list = {
+            0: ('Привилегии доступа', Privileges(self.con)),
+            1: ('Роли пользователей', Roles(self.con)),
+            2: ('Места работы/учёбы', Places(self.con)),
+            3: ('Учебные программы', Courses(self.con)),
+            4: ('Учебные группы', Groups(self.con)),
+            5: ('Списки учебных групп', GroupTable(self.con))
+        }
+        self.listBox.addItems([val[0] for val in self.table_list.values()])
+        self.listBox.currentIndexChanged.connect(self.tab1_change_table)
+        self.listBox.setCurrentIndex(3)
+
+        # self.MainTab.setCurrentIndex(0)
         self.tableView.doubleClicked.connect(self.edit_Button.click)  # ------------------
         self.MainTab.currentChanged.connect(self.main_prepare_tab)
+        self.buttonEditFrame.button(QDialogButtonBox.Save).setText('Сохранить')
+        self.buttonEditFrame.button(QDialogButtonBox.No).setText('Отмена')
+        self.fltCheck.stateChanged.connect(self.tab1_filter)
+        self.add_Button.clicked.connect(self.tab1_clicked_buttons)
+        self.edit_Button.clicked.connect(self.tab1_clicked_buttons)
+        self.del_Button.clicked.connect(self.tab1_clicked_buttons)
+        self.commit_Button.clicked.connect(self.tab1_clicked_buttons)
+        self.rollback_Button.clicked.connect(self.tab1_clicked_buttons)
+        self.buttonEditFrame.rejected.connect(self.tab1_deactivateEditFrame)
+        self.buttonEditFrame.accepted.connect(self.tab1_save_edit_frame)
+        self.MainTab.tabBarClicked.connect(self.tab1_check_for_save)
+        self.tab2_buttonBox.button(QDialogButtonBox.Save).setText('Сохранить')
+        self.tab2_buttonBox.button(QDialogButtonBox.Cancel).setText('Отмена')
+        self.currTable.need_to_save.connect(self.tab2_refresh_form)
+        self.tableView_Users.doubleClicked.connect(self.tab2_edit_form)
+        self.tab2_del.clicked.connect(self.tab2_clicked_buttons)
+        self.tab2_add.clicked.connect(self.tab2_clicked_buttons)
+        self.tab2_edit.clicked.connect(self.tab2_clicked_buttons)
+        self.tab2_commit.clicked.connect(self.tab2_clicked_buttons)
+        self.tab2_rollback.clicked.connect(self.tab2_clicked_buttons)
+        self.tab2_buttonBox.rejected.connect(self.tab2_deactivateEditFrame)
+        self.tab2_buttonBox.accepted.connect(self.tab2_save_edit_frame)
+
         self.MainTab.setCurrentIndex(1)
+        self.tab2_activate()
 
     def main_prepare_tab(self):
         if self.tab1.isVisible():
-            self.table_list = {
-                0: ('Привилегии доступа', Privileges(self.con)),
-                1: ('Роли пользователей', Roles(self.con)),
-                2: ('Места работы/учёбы', Places(self.con)),
-                3: ('Учебные программы', Courses(self.con)),
-                4: ('Учебные группы', Groups(self.con)),
-                5: ('Списки учебных групп', GroupTable(self.con))
-            }
-            self.listBox.addItems([val[0] for val in self.table_list.values()])
-            self.listBox.currentIndexChanged.connect(self.tab1_change_table)
-            self.listBox.setCurrentIndex(3)
-            self.buttonEditFrame.button(QDialogButtonBox.Save).setText('Сохранить')
-            self.buttonEditFrame.button(QDialogButtonBox.No).setText('Отмена')
-            # Фильтр списка
-            self.fltCheck.stateChanged.connect(self.tab1_filter)
-            self.fltCheck.setChecked(True)
-            self.fltCheck.setChecked(False)
-            self.add_Button.clicked.connect(self.tab1_clicked_buttons)
-            self.edit_Button.clicked.connect(self.tab1_clicked_buttons)
-            self.del_Button.clicked.connect(self.tab1_clicked_buttons)
-            self.commit_Button.clicked.connect(self.tab1_clicked_buttons)
-            self.rollback_Button.clicked.connect(self.tab1_clicked_buttons)
-            self.buttonEditFrame.rejected.connect(self.tab1_deactivateEditFrame)
-            self.buttonEditFrame.accepted.connect(self.tab1_save_edit_frame)
-            self.MainTab.tabBarClicked.connect(self.tab1_check_for_save)
+            self.tab1_activate()
 
         elif self.tab2.isVisible():
-            self.frame_users.hide()
-            self.currTable = Users(self.con)
-            self.currTable.update()
-            self.tableView_Users.setModel(self.currTable.model())
-            self.tableView_Users.resizeColumnsToContents()
-            self.tableView_Users.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.currTable.need_to_save.connect(self.tab2_refresh_form)
-            self.tableView_Users.doubleClicked.connect(self.tab2_edit_form)
-            self.tab2_del.clicked.connect(self.tab2_clicked_buttons)
-            self.tab2_add.clicked.connect(self.tab2_clicked_buttons)
-            self.tab2_edit.clicked.connect(self.tab2_clicked_buttons)
-            self.tab2_commit.clicked.connect(self.tab2_clicked_buttons)
-            self.tab2_rollback.clicked.connect(self.tab2_clicked_buttons)
-            # self.tab2_buttonGroup.buttonClicked.connect(self.tab2_clicked_buttons)
-            self.tab2_buttonBox.rejected.connect(self.tab2_deactivateEditFrame)
-            self.tab2_buttonBox.accepted.connect(self.tab2_save_edit_frame)
-            self.tab2_deactivateEditFrame()
+            self.tab2_activate()
 
         elif self.tab3.isVisible():
             print('tab3')
@@ -79,14 +76,18 @@ class MWindow(QMainWindow, Ui_MainWindow):
             print('tab4')
         elif self.tab5.isVisible():
             print('tab5')
+        elif self.tab6.isVisible():
+            print('tab6')
 
     def create_edit_widgets(self, curLayout):
         self.current_data = self.currTable.get_record(self.id)
+        self.delete_edit_form(curLayout)
         for i, val in enumerate(self.current_data):
             self.edit_widgets.append(QLabel(val[1], self))
             curLayout.addWidget(self.edit_widgets[-1], i + 2, 0)
             if val[0][:2] == 'id':
                 self.edit_widgets.append(QComboBox(self))
+                self.edit_widgets[-1].setFocusPolicy(Qt.StrongFocus)
                 curLayout.addWidget(self.edit_widgets[-1], i + 2, 1)
                 sql = f"""select id || " : " || name || " : " ||  comment from {val[0][2:]}"""
                 # sql = f"select name from {val[0][2:]}"
@@ -101,9 +102,11 @@ class MWindow(QMainWindow, Ui_MainWindow):
             else:
                 self.edit_widgets.append(QLineEdit(str(val[2]), self))
                 curLayout.addWidget(self.edit_widgets[-1], i + 2, 1)
+            self.edit_widgets[1].setFocus()
 
     def update_edit_frame(self):
         arg = {}
+        # self.edit_widgets[0]
         for i, widg in enumerate(self.edit_widgets[1::2]):
             if type(widg) == QLineEdit:
                 arg[self.current_data[i][0]] = widg.text()
@@ -113,10 +116,19 @@ class MWindow(QMainWindow, Ui_MainWindow):
                 arg[self.current_data[i][0]] = str(id)
             else:
                 print('Ошибочный тип в редакторе!')
+        for widg in self.edit_widgets:
+            widg.deleteLater()
+        self.edit_widgets.clear()
         if self.id == 0:
             self.currTable.rec_append(arg)
         else:
             self.currTable.rec_update(self.id, arg)
+
+    def delete_edit_form(self, curLayout):
+        for widg in self.edit_widgets:
+            curLayout.removeWidget(widg)
+            widg.deleteLater()
+        self.edit_widgets.clear()
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.tab1_check_for_save()
@@ -207,10 +219,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.tableView.selectRow(0)
 
     def tab1_deactivateEditFrame(self):
-        for widg in self.edit_widgets:
-            self.gridLayout.removeWidget(widg)
-            widg.deleteLater()
-        self.edit_widgets.clear()
+        self.delete_edit_form(self.gridLayout)
         self.editFrame.hide()
         for button in self.buttonMainGroup.buttons():
             button.setDisabled(False)
@@ -276,10 +285,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
             button.setDisabled(True)
 
     def tab2_deactivateEditFrame(self):
-        for widg in self.edit_widgets:
-            self.gridLayout_2.removeWidget(widg)
-            widg.deleteLater()
-        self.edit_widgets.clear()
+        self.delete_edit_form(self.gridLayout_2)
         self.frame_users.hide()
         for button in self.tab2_buttonGroup.buttons():
             button.setDisabled(False)
@@ -289,3 +295,21 @@ class MWindow(QMainWindow, Ui_MainWindow):
     def tab2_save_edit_frame(self):
         self.update_edit_frame()
         self.tab2_deactivateEditFrame()
+
+    def tab1_activate(self):
+        self.delete_edit_form(self.gridLayout)
+        self.tab1_change_table()
+        self.editFrame.hide()
+        self.fltCheck.setChecked(True)
+        self.fltCheck.setChecked(False)
+        # Фильтр списка
+
+    def tab2_activate(self):
+        self.delete_edit_form(self.gridLayout_2)
+        self.frame_users.hide()
+        self.currTable = Users(self.con)
+        self.tableView_Users.setModel(self.currTable.model())
+        self.tableView_Users.resizeColumnsToContents()
+        self.tableView_Users.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tab2_deactivateEditFrame()
+

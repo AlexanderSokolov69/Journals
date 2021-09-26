@@ -1,4 +1,5 @@
 import sys
+import sqlite3
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QHeaderView
 
 from PyQt5 import QtWidgets, QtCore, QtGui

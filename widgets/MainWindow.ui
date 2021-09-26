@@ -169,6 +169,24 @@
              <number>2</number>
             </property>
             <layout class="QFormLayout" name="formLayout">
+             <property name="horizontalSpacing">
+              <number>0</number>
+             </property>
+             <property name="verticalSpacing">
+              <number>6</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item row="1" column="1">
               <widget class="QPushButton" name="add_Button">
                <property name="maximumSize">
@@ -564,12 +582,34 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>250</width>
-              <height>40</height>
+              <width>200</width>
+              <height>45</height>
              </size>
             </property>
+            <property name="tabletTracking">
+             <bool>false</bool>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="smallDecimalPoint">
+             <bool>false</bool>
+            </property>
             <property name="digitCount">
-             <number>4</number>
+             <number>8</number>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Flat</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -619,25 +659,21 @@
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <widget class="QLabel" name="label_6">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>151</width>
-                 <height>20</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>Текущая запись:</string>
-               </property>
-              </widget>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Текущая запись:</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
              <widget class="QPushButton" name="tab2_commit">
               <property name="sizePolicy">
@@ -648,7 +684,7 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>30</height>
                </size>
               </property>
@@ -656,7 +692,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Сохранить</string>
+               <string>Сохранить изменения</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">tab2_buttonGroup</string>
@@ -673,12 +709,12 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>120</width>
+                <width>150</width>
                 <height>30</height>
                </size>
               </property>
               <property name="text">
-               <string>Отменить</string>
+               <string>Отменить изменения</string>
               </property>
               <attribute name="buttonGroup">
                <string notr="true">tab2_buttonGroup</string>
@@ -686,6 +722,13 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_4">
@@ -704,6 +747,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_9">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -791,15 +841,20 @@
       </widget>
       <widget class="QWidget" name="tab3">
        <attribute name="title">
-        <string>Расписания</string>
+        <string>Учебные группы</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="tab4">
        <attribute name="title">
-        <string>Журналы</string>
+        <string>Расписания</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="tab5">
+       <attribute name="title">
+        <string>Журналы</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab6">
        <attribute name="title">
         <string>Настройки</string>
        </attribute>
@@ -823,7 +878,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonMainGroup"/>
   <buttongroup name="tab2_buttonGroup"/>
+  <buttongroup name="buttonMainGroup"/>
  </buttongroups>
 </ui>

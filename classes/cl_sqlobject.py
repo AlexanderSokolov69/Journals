@@ -1,6 +1,8 @@
 import sqlite3
 from sqlite3 import connect
+import datetime
 
+from classes.cl_logging import Logger
 from .qt_classes import MyTableModel
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
@@ -24,13 +26,19 @@ class SQLObject(QObject):
         self.editable = False
         self.set_sql()
         self.update()
+        # self.log = Logger(con)
 
     def set_sql(self, sql=None, flt=None):
         pass
 
     def update(self):
         if self.sql is not None:
-            ret = self.cur.execute(self.sql).fetchall()
+            try:
+                ret = self.cur.execute(self.sql).fetchall()
+            except (sqlite3.Error, sqlite3.Warning) as err:
+                # self.log.out(str(datetime.date), str(datetime.time), '[update class]', str(err), self.sql)
+                print(err, '[update class]', self.sql)
+                ret = None
             if ret:
                 self.header = [i[0] for i in self.cur.description]
                 self.data = [['' if zp == None else zp for zp in rec] for rec in ret]
@@ -53,34 +61,59 @@ class SQLObject(QObject):
         return self.tmodel
 
     def commit(self):
-        self.con.commit()
+        try:
+            self.con.commit()
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[commit]', str(err), '')
+            print(err, '[commit]')
 
     def rollback(self):
-        self.con.rollback()
+        try:
+            self.con.rollback()
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[rollback]', str(err), '')
+            print(err, '[rollback]')
 
     def rec_update(self, id, arg: dict):
         args = ', '.join([f'{item[0]} = "{item[1]}"' for item in arg.items()])
         sql = f"update {self.dbname} set {args} where id = {id}"
-        self.cur.execute(sql)
+        try:
+            self.cur.execute(sql)
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[update record]', str(err), self.sql)
+            print(err, '[update record]', sql)
         return True
 
     def rec_append(self, arg: dict):
         key = ', '.join(arg.keys())
         val = '"' + '", "'.join(arg.values()) +'"'
         sql = f"""insert into {self.dbname} ({key}) values ({val})"""
-        self.cur.execute(sql)
+        try:
+            self.cur.execute(sql)
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[append record]', str(err), self.sql)
+            print(err, '[append record]', sql)
         return True
 
     def rec_delete(self, id):
         sql = f"delete from {self.dbname} where id = {id}"
-        self.cur.execute(sql)
+        try:
+            self.cur.execute(sql)
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[delete record]', str(err), self.sql)
+            print(err, '[delete record]', sql)
         return True
 
     def get_record(self, id):
         fields = ', '.join([key[0] for key in self.keys])
         sql = f"select {fields} from {self.dbname} where id = {id}"
         cur = self.con.cursor()
-        data = cur.execute(sql).fetchone()
+        data = None
+        try:
+            data = cur.execute(sql).fetchone()
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[get record]', str(err), self.sql)
+            print(err, '[get record]', sql)
         if not data:
             data = [''] * len(self.keys)
         ret = []
@@ -92,9 +125,13 @@ class SQLObject(QObject):
 
     def execute_command(self, comm):
         cur = self.con.cursor()
-        ret = cur.execute(comm).fetchall()
+        try:
+            ret = cur.execute(comm).fetchall()
+        except (sqlite3.Error, sqlite3.Warning) as err:
+            # self.log.out(str(datetime.date), str(datetime.time), '[execute command]', str(err), self.sql)
+            print(err, '[execute command]', comm)
+            ret = [[]]
         return ret
-
 
 
 if __name__ == '__main__':
