@@ -1,7 +1,5 @@
-from PyQt5.QtCore import QObject
-from PyQt5.QtGui import QKeyEvent
-from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, \
-    QDialogButtonBox, QTableView, QWidget
+from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, \
+    QComboBox, QDialogButtonBox
 from PyQt5 import QtGui, uic
 from PyQt5.QtCore import Qt
 from classes.cl_users import Users
