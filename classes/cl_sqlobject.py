@@ -33,7 +33,7 @@ class SQLObject(QObject):
             ret = self.cur.execute(self.sql).fetchall()
             if ret:
                 self.header = [i[0] for i in self.cur.description]
-                self.data = [list(rec) for rec in ret]
+                self.data = [['' if zp == None else zp for zp in rec] for rec in ret]
             else:
                 self.data =[[]]
             self.tmodel = MyTableModel(self.header, self.data, self.editable)

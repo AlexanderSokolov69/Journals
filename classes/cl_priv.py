@@ -6,7 +6,8 @@ class Privileges(SQLObject):
     def set_sql(self, sql=None, flt='id'):
         self.keys = (
             ('name', 'Название привилегии доступа:'),
-            ('access', 'Код доступа:')
+            ('access', 'Код доступа:'),
+            ('comment', 'Доп. информация')
         )
         self.dbname = 'priv'
         if sql is None:
