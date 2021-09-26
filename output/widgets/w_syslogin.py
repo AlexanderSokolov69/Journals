@@ -1,12 +1,9 @@
 import sqlite3
 import sys
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow, QTableWidget
-
 from classes.cl_password import Password
 from classes.cl_users import Users
 from .loginDlg import Ui_Dialog
-
-
 
 
 class LoginDialog(QWidget, Ui_Dialog):

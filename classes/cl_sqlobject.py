@@ -1,10 +1,6 @@
 import sqlite3
 from sqlite3 import connect
-import datetime
-
-from classes.cl_logging import Logger
 from .qt_classes import MyTableModel
-from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 
 

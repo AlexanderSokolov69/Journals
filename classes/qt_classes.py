@@ -12,7 +12,6 @@ class MyTableModel(QtCore.QAbstractTableModel):
         self.editable = editable
         self.current_index = (-1, -1)
 
-
     def headerData(self, section: int, orientation: Qt.Orientation, role: int):
         if role == QtCore.Qt.DisplayRole:
             if orientation == Qt.Horizontal:
@@ -26,7 +25,6 @@ class MyTableModel(QtCore.QAbstractTableModel):
             self.beginResetModel()
             self.data.sort(key=lambda i: i[section])
             self.endResetModel()
-
 
     def columnCount(self, parent=None):
             return len(self.head)

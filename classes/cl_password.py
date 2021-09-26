@@ -3,6 +3,7 @@ import hashlib
 
 
 class Password:
+    """ Работа с паролями. упаковка/распаковка """
     def __init__(self, passwd=''):
         self.N = 8
         salt = os.urandom(self.N)
@@ -22,7 +23,6 @@ class Password:
     def set_storage(self, storage):
         self.storage = storage
 
-
     def check_passwd(self, passwd):
         salt = self.storage[:self.N]
         psw = self.storage[self.N:]
@@ -32,8 +32,3 @@ class Password:
 if __name__ == '__main__':
     ph = Password(input())
     print(ph.get_storage())
-
-    # while (psw := input()):
-    #     print(ph.check_passwd(psw))
-    #
-

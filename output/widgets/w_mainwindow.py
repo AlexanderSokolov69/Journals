@@ -1,7 +1,5 @@
-from PyQt5.QtCore import QObject
-from PyQt5.QtGui import QKeyEvent
 from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, QComboBox, \
-    QDialogButtonBox, QTableView, QWidget
+    QDialogButtonBox
 from PyQt5 import QtGui, uic
 from PyQt5.QtCore import Qt
 from classes.cl_users import Users
@@ -13,7 +11,6 @@ class MWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, con):
         super(MWindow, self).__init__()
         uic.loadUi('widgets\\MainWindow.ui', self)
-        # self.setupUi(self)
         self.initUi(con)
 
     def initUi(self, con):

@@ -7,7 +7,7 @@ from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, G
 from widgets.MainWindow import Ui_MainWindow
 
 
-class MWindow(QMainWindow, Ui_MainWindow):
+class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно приложения
     def __init__(self, con):
         super(MWindow, self).__init__()
         uic.loadUi('widgets\\MainWindow.ui', self)
@@ -45,7 +45,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.rollback_Button.clicked.connect(self.tab1_clicked_buttons)
         self.buttonEditFrame.rejected.connect(self.tab1_deactivateEditFrame)
         self.buttonEditFrame.accepted.connect(self.tab1_save_edit_frame)
-        self.MainTab.tabBarClicked.connect(self.tab1_check_for_save)
+        self.MainTab.tabBarClicked.connect(self.check_for_commit)
         self.tab2_buttonBox.button(QDialogButtonBox.Save).setText('Сохранить')
         self.tab2_buttonBox.button(QDialogButtonBox.Cancel).setText('Отмена')
         self.currTable.need_to_save.connect(self.tab2_refresh_form)
@@ -62,12 +62,11 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.tab2_activate()
 
     def main_prepare_tab(self):
+        """ Переключение окон главного окна """
         if self.tab1.isVisible():
             self.tab1_activate()
-
         elif self.tab2.isVisible():
             self.tab2_activate()
-
         elif self.tab3.isVisible():
             print('tab3')
         elif self.tab4.isVisible():
@@ -78,6 +77,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
             print('tab6')
 
     def create_edit_widgets(self, curLayout):
+        """ Создание полей редактирования записи """
         self.current_data = self.currTable.get_record(self.id)
         self.delete_edit_form(curLayout)
         for i, val in enumerate(self.current_data):
@@ -103,8 +103,8 @@ class MWindow(QMainWindow, Ui_MainWindow):
             self.edit_widgets[1].setFocus()
 
     def update_edit_frame(self):
+        """ Сохраняем результаты редактирования. либо создание новой записи """
         arg = {}
-        # self.edit_widgets[0]
         for i, widg in enumerate(self.edit_widgets[1::2]):
             if type(widg) == QLineEdit:
                 arg[self.current_data[i][0]] = widg.text()
@@ -123,16 +123,19 @@ class MWindow(QMainWindow, Ui_MainWindow):
             self.currTable.rec_update(self.id, arg)
 
     def delete_edit_form(self, curLayout):
+        """ Удаляем поля редактирования """
         for widg in self.edit_widgets:
             curLayout.removeWidget(widg)
             widg.deleteLater()
         self.edit_widgets.clear()
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.tab1_check_for_save()
+        """ Проверка на сохранение данных при выходе из программы """
+        self.check_for_commit()
         return QMainWindow.closeEvent(self, a0)
 
-    def tab1_check_for_save(self):
+    def check_for_commit(self):
+        """ Диалог для COMMIT - ROLLBACK изменений """
         if self.currTable.con.in_transaction:
             buttonReply = QMessageBox.question(self, 'Редактор', "Остались несохранённые изменения, сохранить?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -142,6 +145,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
                 self.currTable.rollback()
 
     def tab1_clicked_buttons(self):
+        """ Обработка нажатий правого поля кнопок на ТАБ 1"""
         obj_name = self.sender().objectName()
         if obj_name == 'del_Button':
             self.currTable.rec_delete(self.currTable.data[self.tableView.currentIndex().row()][0])
@@ -167,6 +171,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
         self.listBox.setDisabled(True)
 
     def tab1_refresh_table(self):
+        """ Смена текушей таблицы. Обновление формы """
         self.currTable.update()
         self.tableLabel.setText(f"{self.listBox.currentText()}   ({len(self.currTable.data)})")
         self.tableView.setModel(self.currTable.model())
@@ -193,6 +198,7 @@ class MWindow(QMainWindow, Ui_MainWindow):
             self.edit_Button.setDisabled(False)
 
     def tab1_filter(self):
+        """ Работа с фильтром данных """
         if self.fltCheck.isChecked():
             self.fltLabel1.show()
             self.fltCombo1.show()
@@ -209,9 +215,9 @@ class MWindow(QMainWindow, Ui_MainWindow):
             self.fltCombo3.hide()
 
     def tab1_change_table(self):
+        """ Переключаем текущую таблицу """
         self.tableLabel.setText(self.listBox.currentText())
         self.currTable = self.table_list[self.listBox.currentIndex()][1]
-#        self.currTable.need_to_save.connect(self.sig)
         self.currTable.update()
         self.tab1_refresh_table()
         self.tableView.selectRow(0)
