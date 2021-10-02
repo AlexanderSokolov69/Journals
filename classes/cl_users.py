@@ -4,7 +4,6 @@ from .cl_sqlobject import SQLObject
 
 class Users(SQLObject):
     def set_sql(self, sql=None, flt='Фамилия'):
-        self.editable = True
         self.keys = (
             ('name', 'Фамилия И.О.:'),
             ('fam', 'Фамилия:'),

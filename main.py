@@ -2,13 +2,18 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from classes.db_session import connectdb
 from classes.db_classes import Logger
-from widgets.w_syslogin import LoginDialog
 from widgets.w_mainwindow import MWindow
+from widgets.w_syslogin import LoginDialog
+
+
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    con = connectdb('db\\database_J.db')
+    sys.excepthook = except_hook
+    con = connectdb()
     log = Logger(con)
     log.out(('', '', '', '', 'Старт программы'))
     login_user = LoginDialog(con)
@@ -19,4 +24,3 @@ if __name__ == '__main__':
         wnd = MWindow(con)
         wnd.showMaximized()
         sys.exit(app.exec())
-

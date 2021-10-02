@@ -27,19 +27,19 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_6">
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
      <widget class="QTabWidget" name="MainTab">
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="tabPosition">
-       <enum>QTabWidget::South</enum>
+       <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -134,7 +134,7 @@
             </property>
             <property name="font">
              <font>
-              <pointsize>10</pointsize>
+              <pointsize>12</pointsize>
              </font>
             </property>
            </widget>
@@ -878,7 +878,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="tab2_buttonGroup"/>
   <buttongroup name="buttonMainGroup"/>
+  <buttongroup name="tab2_buttonGroup"/>
  </buttongroups>
 </ui>

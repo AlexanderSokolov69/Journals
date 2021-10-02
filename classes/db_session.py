@@ -2,7 +2,7 @@ import sqlite3
 import sys
 from configparser import ConfigParser
 
-def connectdb(path):
+def connectdb(path=''):
     try:
         cfg = ConfigParser()
         cfg.read("settings.ini")

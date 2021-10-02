@@ -6,7 +6,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 
 class SQLObject(QObject):
     need_to_save = pyqtSignal()
-    def __init__(self, con: connect):
+    def __init__(self, con: connect, editable=False, date_col=8):
         super(SQLObject, self).__init__()
         if con is None:
             Exception('NO database connection')
@@ -19,10 +19,14 @@ class SQLObject(QObject):
         self.header = []
         self.data = []
         self.keys = []
-        self.editable = False
+        self.editable = editable
+        self.date_col = date_col
         self.set_sql()
         self.update()
         # self.log = Logger(con)
+
+    def rows(self):
+        return len(self.data)
 
     def set_sql(self, sql=None, flt=None):
         pass
@@ -40,7 +44,7 @@ class SQLObject(QObject):
                 self.data = [['' if zp == None else zp for zp in rec] for rec in ret]
             else:
                 self.data =[[]]
-            self.tmodel = MyTableModel(self.header, self.data, self.editable)
+            self.tmodel = MyTableModel(self.header, self.data, self.editable, self.date_col)
             self.tmodel.need_save.connect(self.update_model)
             return len(self.data)
         else:

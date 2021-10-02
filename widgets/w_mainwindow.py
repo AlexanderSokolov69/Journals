@@ -1,17 +1,19 @@
 from PyQt5.QtWidgets import QLabel, QMainWindow, QAbstractItemView, QMessageBox, QLineEdit, \
-    QComboBox, QDialogButtonBox
-from PyQt5 import QtGui, uic
+    QComboBox, QDialogButtonBox, QHBoxLayout
+from PyQt5 import QtGui     # , uic
 from PyQt5.QtCore import Qt
 from classes.cl_users import Users
 from classes.db_classes import Privileges, Roles, Places, Courses, GroupTable, Groups
+from classes.bb_converts import *
 from widgets.MainWindow import Ui_MainWindow
+from widgets.w_tab3form import tab3FormWindow
 
 
 class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно приложения
     def __init__(self, con):
         super(MWindow, self).__init__()
-        uic.loadUi('widgets\\MainWindow.ui', self)
-        # self.setupUi(self)
+        self.setupUi(self)
+        # uic.loadUi('widgets\\MainWindow.ui', self)
         self.initUi(con)
 
     def initUi(self, con):
@@ -25,12 +27,17 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
             1: ('Роли пользователей', Roles(self.con)),
             2: ('Места работы/учёбы', Places(self.con)),
             3: ('Учебные программы', Courses(self.con)),
-            4: ('Учебные группы', Groups(self.con)),
-            5: ('Списки учебных групп', GroupTable(self.con))
+            4: ('Учебные группы', Groups(self.con))
+#            5: ('Списки учебных групп', GroupTable(self.con))
         }
         self.listBox.addItems([val[0] for val in self.table_list.values()])
         self.listBox.currentIndexChanged.connect(self.tab1_change_table)
         self.listBox.setCurrentIndex(3)
+
+        self.myLayout = QHBoxLayout(self)
+        self.tab3.setLayout(self.myLayout)
+        self.myLayout.addWidget(tab3FormWindow(con))
+        # self.wtab3 = tab3FormWindow(con)
 
         # self.MainTab.setCurrentIndex(0)
         self.tableView.doubleClicked.connect(self.edit_Button.click)  # ------------------
@@ -58,6 +65,7 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
         self.tab2_buttonBox.rejected.connect(self.tab2_deactivateEditFrame)
         self.tab2_buttonBox.accepted.connect(self.tab2_save_edit_frame)
 
+
         self.MainTab.setCurrentIndex(1)
         self.tab2_activate()
 
@@ -69,6 +77,7 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
             self.tab2_activate()
         elif self.tab3.isVisible():
             print('tab3')
+            # self.tab3.show()
         elif self.tab4.isVisible():
             print('tab4')
         elif self.tab5.isVisible():
@@ -98,6 +107,8 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
                     if id == str(val[2]):
                         self.edit_widgets[-1].setCurrentIndex(i)
             else:
+                if val[0] == 'birthday':
+                    val[2] = date_us_ru(val[2])
                 self.edit_widgets.append(QLineEdit(str(val[2]), self))
                 curLayout.addWidget(self.edit_widgets[-1], i + 2, 1)
             self.edit_widgets[1].setFocus()
@@ -107,7 +118,10 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
         arg = {}
         for i, widg in enumerate(self.edit_widgets[1::2]):
             if type(widg) == QLineEdit:
-                arg[self.current_data[i][0]] = widg.text()
+                if self.current_data[i][0] == 'birthday':
+                    arg[self.current_data[i][0]] = date_ru_us(widg.text())
+                else:
+                    arg[self.current_data[i][0]] = widg.text().replace(':', '-')
             elif type(widg) == QComboBox:
                 fnd = widg.currentText()
                 id = fnd[:fnd.find(':') - 1]
@@ -311,7 +325,7 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
     def tab2_activate(self):
         self.delete_edit_form(self.gridLayout_2)
         self.frame_users.hide()
-        self.currTable = Users(self.con)
+        self.currTable = Users(self.con, editable=True)
         self.tableView_Users.setModel(self.currTable.model())
         self.tableView_Users.resizeColumnsToContents()
         self.tableView_Users.setSelectionBehavior(QAbstractItemView.SelectRows)

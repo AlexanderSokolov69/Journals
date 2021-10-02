@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>479</width>
-    <height>210</height>
+    <width>507</width>
+    <height>228</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,11 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>IT-куб.Журналы</string>
@@ -31,6 +36,11 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="5" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
@@ -60,7 +70,7 @@
     <widget class="QLineEdit" name="login">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="focusPolicy">
@@ -68,30 +78,11 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>12</pointsize>
-       <weight>75</weight>
-       <italic>true</italic>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Регистрация в системе</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="1">
     <widget class="QLineEdit" name="passwd">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="focusPolicy">
@@ -120,11 +111,30 @@
     <widget class="QLineEdit" name="passwd2">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Регистрация в системе</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
