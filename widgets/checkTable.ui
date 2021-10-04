@@ -46,7 +46,7 @@
          <number>3</number>
         </property>
         <item>
-         <layout class="QGridLayout" name="gridLayout_13">
+         <layout class="QGridLayout" name="grid_mon">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -4660,7 +4660,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_36">
+         <layout class="QGridLayout" name="grid_tuesday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -9207,7 +9207,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_16">
+         <layout class="QGridLayout" name="grid_wednesday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -13754,7 +13754,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_44">
+         <layout class="QGridLayout" name="grid_thursday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -18301,7 +18301,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_35">
+         <layout class="QGridLayout" name="grid_friday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -22848,7 +22848,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_20">
+         <layout class="QGridLayout" name="grid_saturday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -27395,7 +27395,7 @@ color: rgb(255, 255, 127);</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_12">
+         <layout class="QGridLayout" name="grid_sunday">
           <property name="rightMargin">
            <number>2</number>
           </property>
@@ -31951,6 +31951,31 @@ color: rgb(255, 255, 127);</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QFrame" name="frame_3">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableView" name="tableView"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
