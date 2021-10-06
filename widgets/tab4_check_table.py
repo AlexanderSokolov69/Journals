@@ -32,15 +32,18 @@ class tab4FormWindow(QWidget, Ui_tab4Form):
         for day in days:
             calend.append(self.create_day(day))
             self.h_layout_table.addLayout(calend[-1])
-        self.chk_buttonGroup.buttonClicked.connect(self.click)
+#        self.chk_buttonGroup.buttonClicked.connect(self.click)
 
     def click(self):
-        btn = self.sender().buttonClicked
-        print(btn)
-        if btn.isChecked():
-            btn.setStyleSheet(f"background-color: rgb(255, 0, 0);")
-        else:
-            btn.setStyleSheet(f"background-color: rgb(255, 255, 255);")
+        btn : QCheckBox = self.sender()
+        print(btn.objectName(), type(btn))
+        # if btn.isChecked():
+        #     btn.setStyleSheet(f"background-color: rgb(255, 0, 0);")
+        # else:
+        #     btn.setStyleSheet(f"background-color: rgb(255, 255, 255);")
+
+    def set_time(self, i):
+        return f'{8 + i // 2:02}:{i * 30 % 60:02}'
 
     def create_day(self, day='DAY'):
         kab = [['21', (85, 85, 255)],
@@ -59,10 +62,12 @@ class tab4FormWindow(QWidget, Ui_tab4Form):
 #            lbl.setStyleSheet(f"background-color: rgb{num[1]};")
             obj.addWidget(lbl, 1, i + 1)
         for i in range(20):
-            obj.addWidget(QLabel(f'{8 + i // 2:02}:{i * 30 % 60:02}'), i + 2, 0)
+            obj.addWidget(QLabel(self.set_time(i)), i + 2, 0)
             for j, num in enumerate(kab):
                 ch_b = QCheckBox(' ')
-                self.chk_buttonGroup.addButton(ch_b)
+                ch_b.setObjectName(f"{day} {i} {j}")
+                # self.chk_buttonGroup.addButton(ch_b)
+                ch_b.stateChanged.connect(self.click)
                 ch_b.setStyleSheet(f"background-color: rgb{num[1]};")
                 obj.addWidget(ch_b, i + 2, j + 1)
         v_line = QFrame()

@@ -108,6 +108,14 @@ class tab3FormWindow(QWidget, Ui_tab3Form):
             self.tab3_volume_lcd.display(cnt[0][0])
         else:
             self.tab3_volume_lcd.display(0)
+        sql = f"""select sum(c.lesson) * 2 from courses c
+                left join groups g on g.idCourses = c.id
+                left join group_table gt on gt.idGroups = g.id"""
+        cnt = self.grp_tbl.execute_command(sql)
+        if cnt:
+            self.tab3_ned_lcd.display(cnt[0][0])
+        else:
+            self.tab3_ned_lcd.display(0)
 
 
     def tab3_change_program(self):
