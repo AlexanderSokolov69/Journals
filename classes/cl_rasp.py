@@ -11,7 +11,7 @@ class Rasp(SQLObject):
             ('end', 'Окончание занятий:'),
             ('comment', 'Доп. информация')
         )
-        self.dbname = 'groups'
+        self.dbname = 'rasp'
         if sql is None:
             self.sql = f"""select r.id, g.name || " - " || ju.name as "Группа - наставник", d.name as "День недели" , 
                     k.name as "Кабинет", r.start as "Начало", r.end as "Окончание", 
