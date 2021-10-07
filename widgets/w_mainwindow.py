@@ -42,7 +42,9 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
 
         self.tab4_myLayout = QHBoxLayout(self)
         self.tab4.setLayout(self.tab4_myLayout)
-        self.tab4_myLayout.addWidget(tab4FormWindow(con))
+        self.tab4Widget = tab4FormWindow(con)
+        self.tab4_myLayout.addWidget(self.tab4Widget)
+        self.tab4Widget.collisium.connect(self.rasp_coll)
 
 
         # self.MainTab.setCurrentIndex(0)
@@ -75,6 +77,10 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
         self.MainTab.setCurrentIndex(1)
         self.tab2_activate()
 
+    def rasp_coll(self):
+        # print('collisium')
+        self.statusbar.showMessage('Коллизия расписания!!!')
+
     def main_prepare_tab(self):
         """ Переключение окон главного окна """
         if self.tab1.isVisible():
@@ -86,6 +92,7 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
             # self.tab3.show()
         elif self.tab4.isVisible():
             print('tab4')
+            self.tab4Widget.show()
         elif self.tab5.isVisible():
             print('tab5')
         elif self.tab6.isVisible():
