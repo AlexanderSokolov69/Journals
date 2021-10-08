@@ -91,8 +91,7 @@ class MWindow(QMainWindow, Ui_MainWindow):  # Главное окно прило
             print('tab3')
             # self.tab3.show()
         elif self.tab4.isVisible():
-            print('tab4')
-            self.tab4Widget.show()
+            self.tab4Widget.activate()
         elif self.tab5.isVisible():
             print('tab5')
         elif self.tab6.isVisible():

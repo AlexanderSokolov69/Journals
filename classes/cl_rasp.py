@@ -22,6 +22,6 @@ class Rasp(SQLObject):
                 join groups g on r.idGroups = g.id
                 join (select gu.id, u.name from groups gu join users u on gu.idUsers = u.id) ju on ju.id = g.id
                 join (select cu.id, cu.acchour, cu.hday from courses cu) jc on jc.id = g.idCourses
-            order by {flt}"""
+            order by d.id, k.id, r.start"""
         else:
             self.sql = f"""{sql} order by {flt}"""

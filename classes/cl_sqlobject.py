@@ -26,6 +26,8 @@ class SQLObject(QObject):
         # self.log = Logger(con)
 
     def rows(self):
+        if len(self.data[0]) == 0:
+            return 0
         return len(self.data)
 
     def set_sql(self, sql=None, flt=None):

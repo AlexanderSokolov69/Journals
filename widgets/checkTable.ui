@@ -34,23 +34,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Расписание занятий</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="h_layout_table">
         <property name="leftMargin">
          <number>3</number>
@@ -117,15 +100,8 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>35</height>
+                  <height>30</height>
                  </size>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
@@ -160,14 +136,14 @@
                </widget>
               </item>
               <item>
-               <widget class="Line" name="line_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="tab4_commit_btn">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Сохранить</string>
                 </property>
@@ -178,19 +154,19 @@
               </item>
               <item>
                <widget class="QPushButton" name="tab4_rollback_btn">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Отменить</string>
                 </property>
                 <attribute name="buttonGroup">
                  <string notr="true">tab4_btn_group</string>
                 </attribute>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
                </widget>
               </item>
               <item>
@@ -207,7 +183,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QTableView" name="tab4_rasp_view"/>
+            <widget class="QTableView" name="tab4_rasp_view">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

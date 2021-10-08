@@ -23,8 +23,7 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap("IT-куб3.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet("\n"
-"")
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -34,7 +33,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.MainTab = QtWidgets.QTabWidget(self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(11)
         self.MainTab.setFont(font)
         self.MainTab.setTabPosition(QtWidgets.QTabWidget.North)
         self.MainTab.setDocumentMode(True)
@@ -442,7 +441,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.MainTab)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1244, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1244, 27))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -458,13 +457,13 @@ class Ui_MainWindow(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
         self.statusbar.setPalette(palette)
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(10)
         self.statusbar.setFont(font)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.MainTab.setCurrentIndex(1)
+        self.MainTab.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

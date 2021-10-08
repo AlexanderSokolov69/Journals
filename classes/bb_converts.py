@@ -30,6 +30,12 @@ def get_day_list(con):
     res = cur.execute(sql).fetchall()
     return [s[0] for s in res]
 
+def get_short_day_list(con):
+    cur = con.cursor()
+    sql = "select cname from days order by id"
+    res = cur.execute(sql).fetchall()
+    return [s[0] for s in res]
+
 def get_time_list(con):
     cur = con.cursor()
     sql = "select name from times order by id"
