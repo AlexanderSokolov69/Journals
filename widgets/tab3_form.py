@@ -228,6 +228,7 @@ class Ui_tab3Form(object):
         self.verticalLayout_3.addWidget(self.tab3_only_free)
         self.tab3_users_table = QtWidgets.QTableView(tab3Form)
         self.tab3_users_table.setObjectName("tab3_users_table")
+        self.tab3_users_table.horizontalHeader().setSortIndicatorShown(True)
         self.verticalLayout_3.addWidget(self.tab3_users_table)
         self.horizontalLayout.addLayout(self.verticalLayout_3)
 
